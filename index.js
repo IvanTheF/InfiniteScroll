@@ -1,32 +1,35 @@
 const cardContainer = document.getElementById("container");
 const cardCountElem = document.getElementById("count");
-const loader = document.getElementById("loading");
 
 const nextCard = 9;
-
 let cardCount = 1;
 
 const createCard = (index) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.innerHTML = index;
+    card.textContent = index;
     cardContainer.appendChild(card);
+};
+
+const addCards = (count) => {
+    for (let i = 0; i < count; i++) {
+        createCard(cardCount + i);
+    }
+    cardCount += count;
+    cardCountElem.textContent = cardCount;
 };
 
 const infiniteScroll = () => {
     const endOfPage = window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
     if (endOfPage) {
-        for (let i = 0; i < nextCard; i += 1) {
-            createCard(cardCount + i);
-        }
-        cardCount += nextCard;
-        cardCountElem.innerHTML = cardCount;
+        addCards(nextCard);
     }
 };
 
-window.onload = function () {
-    infiniteScroll();
+const loadInitialCards = () => {
+    addCards(nextCard);
 };
 
+window.onload = loadInitialCards;
 window.addEventListener("scroll", infiniteScroll);
